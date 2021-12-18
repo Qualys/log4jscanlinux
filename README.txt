@@ -29,6 +29,7 @@ log4j version
 
 The script’s standard output will be redirected to /usr/local/qualys/cloud-agent/log4j_findings.stdout.
 Any error occurring during its execution is redirected to /usr/local/qualys/cloud-agent/log4j_findings.stderr: This file will also contain command execution start time and status on completing the run.
+If agent is not installed, script will create a directory named /usr/local/qualys/cloud-agent/ and dump the standard output and error in files within it.
 However, no status information will be written in the error file if its execution is aborted.
 
 Sample output:(/usr/local/qualys/cloud-agent/log4j_findings.stdout) 
