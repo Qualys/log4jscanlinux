@@ -18,6 +18,7 @@ log4j()
     if [ "$isZip" -eq 0 ] && [ "$isUnZip" -eq 0 ];then 
         jars=$(find / -xdev -name "*.jar" -type f ! -fstype nfs ! -fstype nfs4 ! -fstype cifs ! -fstype smbfs ! -fstype gfs ! -fstype gfs2 ! -fstype safenetfs ! -fstype secfs ! -fstype gpfs ! -fstype smb2 ! -fstype vxfs ! -fstype vxodmfs ! -fstype afs -print 2>/dev/null);
         
+        IFS=$'\n'
         for i in $jars ;do 
             if zip -sf $i | grep "JndiLookup.class" >/dev/null;then 
                 jdi="JNDI Class Found";
@@ -37,6 +38,7 @@ log4j()
         done;
     else 
         jars=$( find / -xdev -name "*.jar" -type f ! -fstype nfs ! -fstype nfs4 ! -fstype cifs ! -fstype smbfs ! -fstype gfs ! -fstype gfs2 ! -fstype safenetfs ! -fstype secfs ! -fstype gpfs ! -fstype smb2 ! -fstype vxfs ! -fstype vxodmfs ! -fstype afs -print 2> /dev/null); 
+        IFS=$'\n'
         for i in $jars ; do 
             var=$(echo $i | grep -i "log4j.*jar" ) 2> /dev/null; 
             if [ ! -z "$var" ]; then 
