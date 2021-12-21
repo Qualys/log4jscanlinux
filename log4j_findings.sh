@@ -1,16 +1,16 @@
 #!/bin/sh
 
-if [ $# == 0 ]; then
+if [ $# -eq 0 ]; then
 	BASEDIR="/"
 	NETDIR_SCAN=false
-elif [ $# == 1 ]; then
+elif [ $# -eq 1 ]; then
 	BASEDIR=$1
 	if [ ! -d $BASEDIR ];then
 		echo "Please enter valid directory path";
 		exit 1;
 	fi;
 	NETDIR_SCAN=false
-elif [ $# == 2 ]; then
+elif [ $# -eq 2 ]; then
 	BASEDIR=$1
 	NETDIR_SCAN=$2
         if [ ! -d $BASEDIR ];then
@@ -42,7 +42,7 @@ log4j()
 	log4j_exists=0;
     # Change to a network filesystem only scan if 2nd parameter is true. network filesystem scan command
     # does not use -xdev and '!' flags
-    if [ $NETDIR_SCAN == true ]; then
+    if [ $NETDIR_SCAN = true ];then
         jars=$(find ${BASEDIR} -name "*.jar" -type f 2> /dev/null); 
     else
         jars=$(find ${BASEDIR} -xdev -name "*.jar" -type f ! -fstype nfs ! -fstype nfs4 ! -fstype cifs ! -fstype smbfs ! -fstype gfs ! -fstype gfs2 ! -fstype safenetfs ! -fstype secfs ! -fstype gpfs ! -fstype smb2 ! -fstype vxfs ! -fstype vxodmfs ! -fstype afs -print 2>/dev/null);
@@ -103,7 +103,7 @@ log4j()
             fi;
         done;
     fi;
-	if [ $log4j_exists == 0 ]; then
+	if [ $log4j_exists -eq 0 ]; then
 		echo "No log4j jars found on the system, exiting now.";
 	fi;
     echo "Run status : Success" >> /usr/local/qualys/cloud-agent/log4j_findings.stderr;
@@ -120,4 +120,5 @@ else
     rm -rf /usr/local/qualys/cloud-agent/log4j_findings.stdout; 
     echo "Flag is disabled, skipping command execution" > /usr/local/qualys/cloud-agent/log4j_findings.stderr;
 fi;
+
 
