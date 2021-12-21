@@ -17,8 +17,11 @@ Supported architectures: x64, ARM
 How to run the script? 
 1) Create and save a script (.sh) file using any text editor.
 2) Execute the script file using shell script. Use the following command:
-sh <script-name>.sh
+
+sh <script-name>.sh [base_dir] [network_filesystem_scan<true/false>]
 Here, <script-name> is actual script name.
+(default: [base_dir]=/ [network_filesystem_scan]=false)
+e.g. sh ./log4j_findings.sh /home false
 
 The following details are shown in the output: 
 
@@ -35,12 +38,12 @@ However, no status information will be written in the error file if its executio
 Sample output:(/usr/local/qualys/cloud-agent/log4j_findings.stdout) 
 Source: META-INF/maven/org.slf4j/slf4j-log4j12/pom.xml META-INF/maven/log4j/log4j/pom.xml
 JNDI-Class: JNDI Class Not Found
-Path= /root/akshata/TestFiles_log4j/TestFiles/kafka-producer-intellij.jar
+Path= /root/TestFiles_log4j/TestFiles/kafka-producer-intellij.jar
 log4j Unknown
 ------------------------------------------------------------------------
 Source: META-INF/maven/org.apache.logging.log4j/log4j-api/pom.xml META-INF/maven/org.apache.logging.log4j/log4j-core/pom.xml
 JNDI-Class: JNDI Class Found
-Path= /root/akshata/TestFiles_log4j/TestFiles/ProjWithVulLog4j-1.0-SNAPSHOT-jar-with-dependencies.jar
+Path= /root/TestFiles_log4j/TestFiles/ProjWithVulLog4j-1.0-SNAPSHOT-jar-with-dependencies.jar
 log4j 2.13.0
 ------------------------------------------------------------------------
 Source: META-INF/maven/log4j/log4j/pom.xml
