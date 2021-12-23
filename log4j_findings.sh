@@ -27,6 +27,7 @@ fi
 
 log4j()
 { 
+	echo "Script version: 1.0 (Scans jar files only)" ;
     echo "Scanning started for log4j jar" > /usr/local/qualys/cloud-agent/log4j_findings.stderr ;
     date >> /usr/local/qualys/cloud-agent/log4j_findings.stderr;
     
