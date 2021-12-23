@@ -75,7 +75,7 @@ log4j()
             var=$(echo $i | grep -i "log4j.*jar" ) 2> /dev/null; 
             if [ ! -z "$var" ]; then 
 				log4j_exists=1;				
-                echo 'Path: '$i; 
+                echo 'Path= '$i; 
 				## Fetch log4j version from jar
 				ver=$(echo $i | grep -o '[^\/]*$' | grep -oE "([0-9]+\.[0-9]+\.[0-9]+-[a-zA-Z0-9]*[0-9]*|[0-9]+\.[0-9]+-[a-zA-Z0-9]+[0-9]*|[0-9]+\.[0-9]+\.[0-9]+|[0-9]+\.[0-9]+)" | tail -1) 2> /dev/null; 
                 if [ -z "$ver" ]; then 
@@ -89,7 +89,7 @@ log4j()
                 for j in $injars ; do 
                     if [ ! -z "$j" ]; then 						
 						log4j_exists=1;
-                        echo 'Path: '$j; 
+                        echo 'Path= '$j; 
 						## Fetch log4j version from jar
                         ver1=$(echo $j | grep -o '[^\/]*$' | grep -oE "([0-9]+\.[0-9]+\.[0-9]+-[a-zA-Z0-9]*[0-9]*|[0-9]+\.[0-9]+-[a-zA-Z0-9]+[0-9]*|[0-9]+\.[0-9]+\.[0-9]+|[0-9]+\.[0-9]+)" | tail -1) 2> /dev/null; 
                         if [ -z "$ver1" ]; then 
@@ -120,5 +120,4 @@ else
     rm -rf /usr/local/qualys/cloud-agent/log4j_findings.stdout; 
     echo "Flag is disabled, skipping command execution" > /usr/local/qualys/cloud-agent/log4j_findings.stderr;
 fi;
-
 
