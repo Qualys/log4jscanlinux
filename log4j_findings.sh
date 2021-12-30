@@ -136,7 +136,7 @@ log4j()
     if [ $NETDIR_SCAN = true ];then
         jars=`find ${BASEDIR} -type f -regextype posix-egrep -iregex ".+\.(jar|war|ear|zip)$"  2> /dev/null`; 
     else
-		jars=`find ${BASEDIR} -xdev -type f -regextype posix-egrep -iregex ".+\.(jar|war|ear|zip)$"  ! -fstype nfs ! -fstype nfs4 ! -fstype cifs ! -fstype smbfs ! -fstype gfs ! -fstype gfs2 ! -fstype safenetfs ! -fstype secfs ! -fstype gpfs ! -fstype smb2 ! -fstype vxfs ! -fstype vxodmfs ! -fstype afs -print 2>/dev/null`;
+		jars=`find ${BASEDIR} -type f -regextype posix-egrep -iregex ".+\.(jar|war|ear|zip)$"  ! -fstype nfs ! -fstype nfs4 ! -fstype cifs ! -fstype smbfs ! -fstype gfs ! -fstype gfs2 ! -fstype safenetfs ! -fstype secfs ! -fstype gpfs ! -fstype smb2 ! -fstype vxfs ! -fstype vxodmfs ! -fstype afs -print 2>/dev/null`;
     fi 
 	for i in $jars ; do 	 
 		if `echo $i | grep -q ".jar"`; then
