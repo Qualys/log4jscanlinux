@@ -28,10 +28,10 @@ fi
 handle_war_ear_zip()
 {
 	war_file=$1
-	if jar1=`unzip -l $war_file | awk '{print $NF}'| grep -i ".jar" 2> /dev/null `;then
+	if jar1=`unzip -l -- $war_file | awk '{print $NF}'| grep -i ".jar" 2> /dev/null `;then
 		rm -rf /tmp/log4j_for_extract/
 		mkdir /tmp/log4j_for_extract;
-		unzip -d /tmp/log4j_for_extract/ $war_file > /dev/null
+		unzip -d /tmp/log4j_for_extract/ -- $war_file > /dev/null
 	fi;
 	jars=`find /tmp/log4j_for_extract -type f -regextype posix-egrep -iregex ".+\.(jar)$"  2> /dev/null`; 
 	for i in $jars; do 		
