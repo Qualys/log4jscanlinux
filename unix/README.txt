@@ -2,7 +2,7 @@ License
 THIS SCRIPT IS PROVIDED TO YOU "AS IS." TO THE EXTENT PERMITTED BY LAW, QUALYS HEREBY DISCLAIMS ALL WARRANTIES AND LIABILITY FOR THE PROVISION OR USE OF THIS SCRIPT. 
 IN NO EVENT SHALL THESE SCRIPTS BE DEEMED TO BE CLOUD SERVICES AS PROVIDED BY QUALYS
 
-Log4j Vulnerability Scanner Shell Script:
+Log4j Vulnerability Scanner Shell Script: (Beta version)
 
 Description:
 This shell script intends to collect necessary details and help detect CVE-2021-44228 and CVE-2021-45046 vulnerabilities reported in Log4j.
