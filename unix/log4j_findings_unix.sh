@@ -2,8 +2,17 @@
 
 if [ $# -eq 0 ]; then
 	BASEDIR="/";
+	NETDIR_SCAN=false;
 elif [ $# -eq 1 ]; then
 	BASEDIR=$1;
+	if [ ! -d $BASEDIR ]; then
+		echo "Please enter valid directory path";
+		exit 1;
+	fi;
+	NETDIR_SCAN=false
+elif [ $# -eq 2 ]; then
+	BASEDIR=$1
+	NETDIR_SCAN=$2
 	if [ ! -d $BASEDIR ]; then
 		echo "Please enter valid directory path";
 		exit 1;
@@ -37,9 +46,23 @@ log4j()
 		mkdir -p /tmp/log4j_jar;
 	fi;	
 	
-	cd /tmp/log4j_jar 2>/dev/null	
-	
-	jars=$(find ${BASEDIR} -follow -name "*.jar" -type f 2>/dev/null)
+	cd /tmp/log4j_jar 2>/dev/null
+
+	if [ "${OS}" = "AIX" ]; then
+	  if [ $NETDIR_SCAN = false ]; then
+	    jars=$(find ${BASEDIR} -follow -type f -name "*.jar" ! -fstype nfs ! fstype procfs 2>/dev/null)
+	  else
+	    jars=$(find ${BASEDIR} -follow -type f -name "*.jar" ! -fstype procfs 2>/dev/null)
+	  fi
+	elif [ "${OS}" = "Darwin" ]; then
+	  if [ "$NETDIR_SCAN" = false ]; then
+	    jars=$(find ${BASEDIR} -follow -type f -name "*.jar" -fstype local 2>/dev/null)
+	  else
+	    jars=$(find ${BASEDIR} -follow -type f -name "*.jar" 2>/dev/null)
+	  fi
+	fi
+
+	# jars=$(find ${BASEDIR} -follow -name "*.jar" -type f 2>/dev/null)
 	
 	for i in $jars;	do
 		if test=$(jar -tf $i | grep "[l]og4j-core" | grep "pom.xml" 2>/dev/null); then
