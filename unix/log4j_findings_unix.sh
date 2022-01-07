@@ -18,8 +18,9 @@ fi
 
 log4j()
 {
-	echo "Script version: 1.0 (scans JAR files only)";
-	if [ "${OS}" = "AIX" ]; then
+	echo "Script version: 1.0 (scans JAR files only)";	
+	
+	if [ "${OS}" = "AIX" ] || [ "${OS}" = "SunOS" ]; then
 		echo "Scanning started.." > /opt/qualys/cloud-agent/log4j_findings.stderr;
 		date >> /opt/qualys/cloud-agent/log4j_findings.stderr;
 	elif [ "${OS}" = "Darwin" ]; then
@@ -53,12 +54,16 @@ log4j()
 			echo "JNDI-Class: "$jdi
 			echo 'Path= '$i;
 			jar -xf $i > /dev/null
-			ve=`cat $test 2>/dev/null | grep -E "<artifactId>log4j</artifactId>
-.+?<version>"| cut  -d ">" -f 2 | cut -d "<" -f 1 | head -2|awk 'ORS=NR%3?FS:RS';echo ''`;
+			if [ "${OS}" = "SunOS" ]; then
+				ve=`cat $test | head -30 | ggrep -A 1 '<artifactId>log4j</artifactId>'| cut -d ">" -f 2 | cut -d "<" -f 1 | tail -1`
+			else
+				ve=`cat $test 2>/dev/null | grep -E "<artifactId>log4j</artifactId>
+.+?<version>"| cut  -d ">" -f 2 | cut -d "<" -f 1 | head -2|tail -1`;
+			fi;
 			if [ -z "$ve" ]; then 
 				echo 'log4j Unknown'; 
 			else 
-				echo $ve;
+				echo 'log4j '$ve;
 			fi;
 			echo "------------------------------------------------------------------------"
 			rm -rf /tmp/log4j_jar/*
@@ -69,7 +74,7 @@ log4j()
 		echo "No log4j jars found on the system , exiting now.";
 	fi;
 	
-	if [ "${OS}" = "AIX" ]; then
+	if [ "${OS}" = "AIX" ] || [ "${OS}" = "SunOS" ]; then
 		echo "Run Status : Success" >> /opt/qualys/cloud-agent/log4j_findings.stderr;
 	elif [ "${OS}" = "Darwin" ]; then
 		echo "Run Status : Success" >> /Library/Application\ Support/QualysCloudAgent/Data/log4j_findings.stderr;
@@ -78,7 +83,7 @@ log4j()
 
 OS=`uname -s`
 
-if [ "${OS}" = "AIX" ]; then
+if [ "${OS}" = "AIX" ] || [ "${OS}" = "SunOS" ]; then
 	if [ ! -d "/opt/qualys/cloud-agent/" ]; then
 		mkdir -p "/opt/qualys/cloud-agent/";
 		chmod 750 "/opt/qualys/cloud-agent/";
@@ -101,5 +106,6 @@ elif [ "${OS}" = "Darwin" ]; then
 		echo "Flag is disabled, skipping command execution" > /Library/Application\ Support/QualysCloudAgent/Data/log4j_findings.stderr;
 	fi;
 else
-	echo "Unsupported platform: ${OS}, script supports only AIX and MacOS.";
+	echo "Unsupported platform: ${OS}, script supports only AIX, MacOS and Solaris platforms.";
 fi;
+
