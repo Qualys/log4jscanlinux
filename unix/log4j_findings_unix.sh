@@ -61,10 +61,14 @@ log4j()
 	  else
 	    jars=$(find ${BASEDIR} -follow -type f -name "*.jar" 2>/dev/null)
 	  fi
+	elif [ "${OS}" = "SunOS" ]; then
+	  if [ $NETDIR_SCAN = false ]; then
+	    jars=$(find ${BASEDIR} -follow -type f -name "*.jar" -fstype local ! -fstype swapfs ! -fstype procfs ! -fstype lofs ! -fstype cachefs ! -fstype tmpfs ! -fstype mntfs ! -fstype ctfs ! -fstype fdfs ! -fstype objfs 2>/dev/null)
+	  else
+	    jars=$(find ${BASEDIR} -follow -type f -name "*.jar" ! -fstype swapfs ! -fstype procfs ! -fstype lofs ! -fstype cachefs ! -fstype tmpfs ! -fstype mntfs ! -fstype ctfs ! -fstype fdfs ! -fstype objfs 2>/dev/null)
+	  fi
 	fi
 
-	# jars=$(find ${BASEDIR} -follow -name "*.jar" -type f 2>/dev/null)
-	
 	for i in $jars;	do
 		if test=$(jar -tf $i | grep "[l]og4j-core" | grep "pom.xml" 2>/dev/null); then
 			log4j_exists=1;	
