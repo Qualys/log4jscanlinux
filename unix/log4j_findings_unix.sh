@@ -51,7 +51,7 @@ log4j()
 
 	if [ "${OS}" = "AIX" ]; then
 	  if [ $NETDIR_SCAN = false ]; then
-	    jars=$(find ${BASEDIR} -follow -type f -name "*.jar" ! -fstype nfs ! fstype procfs 2>/dev/null)
+	    jars=$(find ${BASEDIR} -follow -type f -name "*.jar" ! -fstype nfs ! -fstype procfs 2>/dev/null)
 	  else
 	    jars=$(find ${BASEDIR} -follow -type f -name "*.jar" ! -fstype procfs 2>/dev/null)
 	  fi
