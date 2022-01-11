@@ -62,7 +62,7 @@ log4j()
 	  fi
 	elif [ "${OS}" = "SunOS" ]; then
 	  if [ $NETDIR_SCAN = false ]; then
-	    jars=$(find ${BASEDIR} -type f -name "*.jar" -local ! -fstype swapfs ! -fstype procfs ! -fstype lofs ! -fstype cachefs ! -fstype tmpfs ! -fstype mntfs ! -fstype ctfs ! -fstype fdfs ! -fstype objfs ! -fstype devfs 2>/dev/null)
+	    jars=$(find ${BASEDIR} -type f -name "*.jar" -local ! -fstype swapfs ! -fstype proc ! -fstype lofs ! -fstype cachefs ! -fstype tmpfs ! -fstype mntfs ! -fstype ctfs ! -fstype fdfs ! -fstype objfs ! -fstype devfs 2>/dev/null)
 	  else
 	    jars=$(find ${BASEDIR} -type f -name "*.jar" ! -fstype swapfs ! -fstype proc ! -fstype lofs ! -fstype cachefs ! -fstype tmpfs ! -fstype mntfs ! -fstype ctfs ! -fstype fdfs ! -fstype objfs ! -fstype devfs 2>/dev/null)
 	  fi
