@@ -40,7 +40,7 @@ log4j()
 	
 	cd /tmp/log4j_jar 2>/dev/null	
 	
-	jars=$(find ${BASEDIR} -follow -name "*.jar" -type f 2>/dev/null)
+	jars=$(find ${BASEDIR} -name "*.jar" -type f 2>/dev/null)
 	
 	for i in $jars;	do
 		if test=$(jar -tf $i | grep "[l]og4j-core" | grep "pom.xml" 2>/dev/null); then
