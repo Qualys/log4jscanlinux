@@ -21,21 +21,22 @@ else
 	echo "Too many parameters passed in."
 	echo "sh ./log4j_findings.sh [base_dir] [network_filesystem_scan<true/false>]"
 	echo "example: sh ./log4j_findings.sh /home false"
-	echo "(default: [base_dir]=/ [network_filesystem_scan]=false)" 
+	echo "(default: [base_dir]=/ [network_filesystem_scan]=false)"
 	exit 1
 fi
 
 handle_war_ear_zip()
 {
 	war_file=$1
-	if jar1=`unzip -l $war_file | awk '{print $NF}'| grep -i ".jar" 2> /dev/null `;then
+	if jar1=`zip -sf  $war_file | awk '{print $NF}'| grep -i ".jar" 2> /dev/null `;then
 		rm -rf /tmp/log4j_for_extract/
 		mkdir /tmp/log4j_for_extract;
 		unzip -d /tmp/log4j_for_extract/ $war_file > /dev/null
 	fi;
 	jars=`find /tmp/log4j_for_extract -type f -regextype posix-egrep -iregex ".+\.(jar)$"  2> /dev/null`; 
 	for i in $jars; do 		
-		IFS=$'\n'
+		IFS='
+		'
 		handle_jar $i $war_file	
 	done;
 	rm -rf /tmp/log4j_for_extract/
@@ -87,21 +88,22 @@ handle_jar_with_zip()
 		jdi="JNDI Class Not Found";
 	fi;	
 	## Checking JNDI-Class value from jar file
-	if test=`zip -sf $jar_file | grep -i "log4j" | grep "pom.xml"`;then 
-		IFS=$oldIFS
+	if test=`zip -sf $jar_file | grep -i "log4j-core" | grep "pom.xml"`;then 
+		IFS=$oldIFS;
 		echo "Source: "$test;
 		log4j_exists=1;
 		## Reading file pom.xml to fetch log4j version
 		echo "JNDI-Class: "$jdi;		
-		IFS=$'\n'		
+		IFS='
+		'		
 		if [ ! -z "$war_file" ];then
 			p=`echo $jar_file | sed -n 's|^/tmp/log4j_for_extract/||p' `;
 			echo 'Path= '$war_file'/'$p
 		else 
 			echo 'Path= '$jar_file
 		fi
-		IFS=$oldIFS
-		ve=`unzip -p $i $test 2> /dev/null | grep -Pzo "<artifactId>log4j</artifactId>\s*<version>.+?</version>"| cut -d ">" -f 2 | cut -d "<" -f 1 | head -2|awk 'ORS=NR%3?FS:RS'`;
+		IFS=$oldIFS;
+		ve=`unzip -p $jar_file $test 2> /dev/null | grep -Pzo "<artifactId>log4j</artifactId>\s*<version>.+?</version>"| cut -d ">" -f 2 | cut -d "<" -f 1 | head -2|awk 'ORS=NR%3?FS:RS'`;
 		if [ -z "$ve" ]; then 
 			echo 'log4j Unknown'; 
 		else 
@@ -134,20 +136,25 @@ log4j()
     unzip -v 2> /dev/null 1> /dev/null;
     isUnZip=$?;
     log4j_exists=0;
-    oldIFS=$IFS
+    oldIFS=$IFS;
 
     # Change to a network filesystem only scan if 2nd parameter is true. network filesystem scan command
     # does not use '!' flags
     if [ $NETDIR_SCAN = true ];then
-        jars=$(find ${BASEDIR} -type f -regextype posix-egrep -iregex ".+\.(jar|war|ear|zip)$"  2> /dev/null); 
+        jars=`find ${BASEDIR} -type f -regextype posix-egrep -iregex ".+\.(jar|war|ear|zip)$" 2> /dev/null`; 
     else
-	jars=$(find ${BASEDIR} -type f -regextype posix-egrep -iregex ".+\.(jar|war|ear|zip)$"  ! -fstype nfs ! -fstype nfs4 ! -fstype cifs ! -fstype smbfs ! -fstype gfs ! -fstype gfs2 ! -fstype safenetfs ! -fstype secfs ! -fstype gpfs ! -fstype smb2 ! -fstype vxfs ! -fstype vxodmfs ! -fstype afs -print 2>/dev/null);
+	jars=`find ${BASEDIR} -type f -regextype posix-egrep -iregex ".+\.(jar|war|ear|zip)$"  ! -fstype nfs ! -fstype nfs4 ! -fstype cifs ! -fstype smbfs ! -fstype gfs ! -fstype gfs2 ! -fstype safenetfs ! -fstype secfs ! -fstype gpfs ! -fstype smb2 ! -fstype vxfs ! -fstype vxodmfs ! -fstype afs -print 2>/dev/null`;
     fi 
 	
-    	IFS=$'\n'
-	for i in $jars ; do 	 
-		if `echo $i | grep -q ".jar"`; then
-			handle_jar $i
+    	IFS='
+	'
+	for i in $jars ; do
+		if `echo $i | grep -q ".jar"`; then		
+			if nested=`zip -sf $i | awk '{print $NF}'| grep -i ".jar" 2>/dev/null`;then
+				handle_war_ear_zip $i
+			else
+				handle_jar $i
+			fi;		
 		else
 			if [ "$isZip" -eq 0 ] && [ "$isUnZip" -eq 0 ];then 
 				handle_war_ear_zip $i
@@ -155,10 +162,12 @@ log4j()
 				echo "Zip/Unzip utility not present on the system, skipping processing of file: "$i >> /usr/local/qualys/cloud-agent/log4j_findings.stderr;
 			fi
 		fi
-    		IFS=$'\n'
+    		IFS='
+		'
 	done
-	if [[ $log4j_exists -eq 0 ]]; then
-		echo "No log4j jars found on the system for base directory , exiting now.";
+	IFS=$oldIFS;
+	if [ $log4j_exists -eq 0 ]; then
+		echo "No log4j jars found on the system , exiting now.";
 	fi;
     echo "Run status : Success" >> /usr/local/qualys/cloud-agent/log4j_findings.stderr;
 };
@@ -174,3 +183,4 @@ else
     rm -rf /usr/local/qualys/cloud-agent/log4j_findings.stdout; 
     echo "Flag is disabled, skipping command execution" > /usr/local/qualys/cloud-agent/log4j_findings.stderr;
 fi;
+
