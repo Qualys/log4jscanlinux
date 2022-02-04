@@ -124,7 +124,7 @@ handle_jar()
 
 log4j()
 {
-    echo "Script version: 2.1 (scans jar/war/ear/zip files)" ;
+    echo "Script version: 2.2 (scans jar/war/ear/zip files)" ;
     echo "Scanning started.." > /usr/local/qualys/cloud-agent/log4j_findings.stderr ;
     date >> /usr/local/qualys/cloud-agent/log4j_findings.stderr ;    
     id=`id`;
