@@ -39,9 +39,10 @@ log4j()
 	fi;	
 	
 	cd /tmp/log4j_jar 2>/dev/null	
-	
+        oldIFS=$IFS;	
 	jars=$(find ${BASEDIR} -name "*.jar" -type f 2>/dev/null)
-	
+       IFS='
+'	
 	for i in $jars;	do
 		if test=$(jar -tf $i | grep "[l]og4j-core" | grep "pom.xml" 2>/dev/null); then
 			log4j_exists=1;	
@@ -69,7 +70,7 @@ log4j()
 			rm -rf /tmp/log4j_jar/*
 		fi
 	done
-	
+	IFS=$oldIFS;
 	if [ $log4j_exists -eq 0 ]; then
 		echo "No log4j jars found on the system , exiting now.";
 	fi;
