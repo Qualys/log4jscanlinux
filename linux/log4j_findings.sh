@@ -124,7 +124,7 @@ handle_jar()
 
 log4j()
 {
-    echo "Script version: 2.2 (scans jar/war/ear/zip files)" ;
+    echo "Script version: 2.3 (scans jar/war/ear/zip files)" ;
     echo "Scanning started.." > /usr/local/qualys/cloud-agent/log4j_findings.stderr ;
     date >> /usr/local/qualys/cloud-agent/log4j_findings.stderr ;    
     id=`id`;
@@ -180,7 +180,11 @@ fi;
 if [ ! -f "/usr/local/qualys/cloud-agent/log4j_findings_disabled" ]; then 
     log4j > /usr/local/qualys/cloud-agent/log4j_findings.stdout 2>/usr/local/qualys/cloud-agent/log4j_findings.stderr;
 else 
-    rm -rf /usr/local/qualys/cloud-agent/log4j_findings.stdout; 
-    echo "Flag is disabled, skipping command execution" > /usr/local/qualys/cloud-agent/log4j_findings.stderr;
+    prevFlag=`grep "Flag is disabled, skipping command execution" /usr/local/qualys/cloud-agent/log4j_findings.stderr 2>/dev/null`
+    if [ -z "$prevFlag" ]; then    
+       echo "Checking log4j flag.." >> /usr/local/qualys/cloud-agent/log4j_findings.stderr ;       
+       date >> /usr/local/qualys/cloud-agent/log4j_findings.stderr ;
+       echo "Flag is disabled, skipping command execution" >> /usr/local/qualys/cloud-agent/log4j_findings.stderr;
+    fi;
 fi;
 
