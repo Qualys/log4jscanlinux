@@ -1,0 +1,25 @@
+Linux:
+
+Version: 2.3
+- Enhanced script to not to overwrite scan results when scan is disabled.
+
+Version: 2.2
+- Added support for scanning nested JARs
+- Fixed issue related filesnames containing spaces in between in Ubuntu.
+
+Version: 2.1
+- Fixed the issue of not scanning all mounted drives by removing  "-xdev" option from the "find" command.
+- Fixed the issue of failing to traverse the directory path with spaces embedded.
+
+Version: 2.0
+- Added support for scanning of JAR, WAR, EAR and ZIP files.
+
+Version: 1.0
+- Added support for scanning of JAR files.
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+
+Unix script:
+
+Version: 1.0
+- Added support for scanning of JAR files.
