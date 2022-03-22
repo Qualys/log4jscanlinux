@@ -31,7 +31,7 @@ handle_war_ear_zip()
 	if jar1=`zip -sf  $war_file | awk '{print $NF}'| grep -i ".jar" 2> /dev/null `;then
 		rm -rf /tmp/log4j_for_extract/
 		mkdir /tmp/log4j_for_extract;
-		unzip -d /tmp/log4j_for_extract/ $war_file > /dev/null
+		unzip -o -d /tmp/log4j_for_extract/ $war_file > /dev/null
 	fi;
 	jars=`find /tmp/log4j_for_extract -type f -regextype posix-egrep -iregex ".+\.(jar)$"  2> /dev/null`; 
 	for i in $jars; do 		
