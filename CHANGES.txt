@@ -1,5 +1,8 @@
 Linux:
 
+Version: 2.4
+- Added changes to terminate the manual execution of the script if agent's inventory scan is in progress to prohibit overriding of the results into output file if happened simultaneously.
+
 Version: 2.3
 - Enhanced script to not to overwrite scan results when scan is disabled.
 

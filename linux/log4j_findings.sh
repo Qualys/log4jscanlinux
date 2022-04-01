@@ -172,6 +172,12 @@ log4j()
     echo "Run status : Success" >> /usr/local/qualys/cloud-agent/log4j_findings.stderr;
 };
 
+isInventoryScanInProgress=`ps -ef | grep /usr/local/qualys/cloud-agent/ChangeListInventory.db | grep -v grep`
+if [ ! -z "$isInventoryScanInProgress" ]; then 
+    echo "Inventory scan is in progress, exiting the manual execution of the script for now..."
+    exit 0
+fi
+
 if [ ! -d "/usr/local/qualys/cloud-agent/" ]; then 
     mkdir -p "/usr/local/qualys/cloud-agent/";
     chmod 750 "/usr/local/qualys/cloud-agent/";
