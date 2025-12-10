@@ -5,7 +5,7 @@ IN NO EVENT SHALL THESE SCRIPTS BE DEEMED TO BE CLOUD SERVICES AS PROVIDED BY QU
 Project Deprecated
 Functionality has been rolled into our product offerings, see https://www.qualys.com/apps/software-composition-analysis/ for details.
 
-Project will be removed/deleted October 1, 2025.
+Project will be removed/deleted July 1, 2026.
 
 Log4j Vulnerability Scanner Shell Script:
 
